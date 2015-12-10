@@ -1,4 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-	<h1> yo</h1>
+<div class="container">
+	<h1>Welcome to Flask!</h1>
+	<br>
+	<p>Click <a href="/login">here</a> to log in.</p>
+	{% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+	<ul class="flashes">
+		{% for category, message in messages %}
+		<li class="{{ category }}">{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	{% endwith %}
+</div>
 {% endblock %}

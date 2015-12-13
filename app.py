@@ -1,13 +1,18 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash, g
 from functools import wraps
-import sqlite3
+from flask.ext.sqlalchemy import SQLAlchemy 
+# import sqlite3
 
 # create the application object
 app = Flask(__name__)
 
 app.secret_key = 'jeffrey'
-app.database = "sample.db"
+# app.database = "sample.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
+# create the sqlalchemy object
+db = SQLAlchemy(app)
 
 # login required decorator
 def login_required(f):
@@ -60,8 +65,8 @@ def logout():
     flash('You were logged out.')
     return redirect(url_for('welcome'))
 
-def connect_db():
-	return sqlite3.connect(app.database)
+# def connect_db():
+# 	return sqlite3.connect(app.database)
 	
 if __name__ == '__main__':
 	app.debug = True

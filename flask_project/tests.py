@@ -26,7 +26,7 @@ class FlaskTestCase(unittest.TestCase):
 	    		password='admin'),
 	    	follow_redirects = True
     	)
-    	self.assertTrue('You were logged in!', response.data)
+    	self.assertTrue(b'You were logged in!', response.data)
 
         # incorrect creds
     def test_incorrect_login(self):
@@ -37,7 +37,7 @@ class FlaskTestCase(unittest.TestCase):
 	    		password='wrong'),
 	    	follow_redirects = True
     	)
-    	self.assertTrue('Invalid credentials. Please try again.', response.data)
+    	self.assertTrue(b'Invalid credentials. Please try again.', response.data)
 
         # logout
     def test_correct_logout(self):
@@ -49,7 +49,7 @@ class FlaskTestCase(unittest.TestCase):
 	    	follow_redirects = True
     	)
     	response = tester.get('/logout', follow_redirects=True)
-    	self.assertTrue('You were logged out!', response.data)
+    	self.assertTrue(b'You were logged out!', response.data)
 
     	# ensure that the main page requires login
     def test_main_route_requires_login(self):

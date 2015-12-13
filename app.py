@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash, g
+from flask import Flask, render_template, redirect, url_for, request, session, flash
 from functools import wraps
 from flask.ext.sqlalchemy import SQLAlchemy 
 # import sqlite3
@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 # create the sqlalchemy object
 db = SQLAlchemy(app)
+from models import *
 
 # login required decorator
 def login_required(f):
@@ -30,10 +31,11 @@ def login_required(f):
 @app.route('/')
 @login_required
 def home():
-    g.db = connect_db()
-    cur = g.db.execute('select * from posts;')	
-    posts = [dict(title=row[0], description=row[1]) for row in cur.fetchall()]
-    g.db.close()
+    # g.db = connect_db()
+    # cur = g.db.execute('select * from posts;')	
+    # posts = [dict(title=row[1], description=row[2]) for row in cur.fetchall()]
+    # g.db.close()
+    posts = db.session.query(BlogPost).all()
     return render_template('index.html', posts=posts)  # render a template
     # return "Hello, World!"  # return a string
 
@@ -66,7 +68,7 @@ def logout():
     return redirect(url_for('welcome'))
 
 # def connect_db():
-# 	return sqlite3.connect(app.database)
+# 	return sqlite3.connect('posts.db')
 	
 if __name__ == '__main__':
 	app.debug = True

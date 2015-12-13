@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 # create the sqlalchemy object
 db = SQLAlchemy(app)
+from models import *
 
 # login required decorator
 def login_required(f):
@@ -30,10 +31,11 @@ def login_required(f):
 @app.route('/')
 @login_required
 def home():
-    g.db = connect_db()
-    cur = g.db.execute('select * from posts;')	
-    posts = [dict(title=row[0], description=row[1]) for row in cur.fetchall()]
-    g.db.close()
+    # g.db = connect_db()
+    # cur = g.db.execute('select * from posts;')	
+    # posts = [dict(title=row[0], description=row[1]) for row in cur.fetchall()]
+    # g.db.close()
+    posts = db.session.query(BlogPost).all()
     return render_template('index.html', posts=posts)  # render a template
     # return "Hello, World!"  # return a string
 
